@@ -13,5 +13,6 @@
 + (NSString *) formatDate: (NSDate *) date;
 + (NSDate *) jsonDateToLocalDate:(NSString *) jsonDate;
 + (NSString *) localeDateToJsonDate: (NSDate *) nsDate;
++ (NSDate *) formatString: (NSString *) date;
 
 @end

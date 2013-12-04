@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F24A216184CF4A80050EEE0 /* DetailsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F24A215184CF4A80050EEE0 /* DetailsTVC.m */; };
+		8F24A219184E31680050EEE0 /* DueDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F24A218184E31680050EEE0 /* DueDateVC.m */; };
+		8F24A22B184E3D420050EEE0 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F24A22A184E3D420050EEE0 /* Task.m */; };
+		8F24A22E184E3D430050EEE0 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F24A22D184E3D430050EEE0 /* Location.m */; };
 		8F53FE431836CD3800A1D2B3 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE411836CD3800A1D2B3 /* CoreDataModel.xcdatamodeld */; };
 		8F53FE5B1836D21600A1D2B3 /* Task+Cloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE5A1836D21600A1D2B3 /* Task+Cloud.m */; };
 		8F53FE5E1836D23600A1D2B3 /* Location+Cloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE5D1836D23600A1D2B3 /* Location+Cloud.m */; };
@@ -18,8 +22,6 @@
 		8F53FE7B1839671C00A1D2B3 /* NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE7A1839671C00A1D2B3 /* NetworkActivity.m */; };
 		8F53FE84183BE36500A1D2B3 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE83183BE36500A1D2B3 /* DetailsViewController.m */; };
 		8F53FE87183BFB7A00A1D2B3 /* FormatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE86183BFB7A00A1D2B3 /* FormatHelper.m */; };
-		8F53FE8A183EB79800A1D2B3 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE89183EB79800A1D2B3 /* Location.m */; };
-		8F53FE8D183EB79900A1D2B3 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE8C183EB79900A1D2B3 /* Task.m */; };
 		8F53FE901844358000A1D2B3 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F53FE8F1844358000A1D2B3 /* LocationService.m */; };
 		8F53FE92184435CB00A1D2B3 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F53FE91184435CB00A1D2B3 /* CoreLocation.framework */; };
 		8F8C552B1825AADA0045717F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8C552A1825AADA0045717F /* Foundation.framework */; };
@@ -48,6 +50,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F24A214184CF4A80050EEE0 /* DetailsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTVC.h; sourceTree = "<group>"; };
+		8F24A215184CF4A80050EEE0 /* DetailsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTVC.m; sourceTree = "<group>"; };
+		8F24A217184E31680050EEE0 /* DueDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueDateVC.h; sourceTree = "<group>"; };
+		8F24A218184E31680050EEE0 /* DueDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueDateVC.m; sourceTree = "<group>"; };
+		8F24A229184E3D420050EEE0 /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		8F24A22A184E3D420050EEE0 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
+		8F24A22C184E3D430050EEE0 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		8F24A22D184E3D430050EEE0 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8F53FE421836CD3800A1D2B3 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		8F53FE591836D21600A1D2B3 /* Task+Cloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Task+Cloud.h"; sourceTree = "<group>"; };
 		8F53FE5A1836D21600A1D2B3 /* Task+Cloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Task+Cloud.m"; sourceTree = "<group>"; };
@@ -69,10 +79,6 @@
 		8F53FE83183BE36500A1D2B3 /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
 		8F53FE85183BFB7A00A1D2B3 /* FormatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormatHelper.h; sourceTree = "<group>"; };
 		8F53FE86183BFB7A00A1D2B3 /* FormatHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormatHelper.m; sourceTree = "<group>"; };
-		8F53FE88183EB79800A1D2B3 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
-		8F53FE89183EB79800A1D2B3 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
-		8F53FE8B183EB79900A1D2B3 /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
-		8F53FE8C183EB79900A1D2B3 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
 		8F53FE8E1844358000A1D2B3 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
 		8F53FE8F1844358000A1D2B3 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		8F53FE91184435CB00A1D2B3 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -129,6 +135,10 @@
 				8F53FE7718395C3B00A1D2B3 /* TaskCDTVC.m */,
 				8F53FE82183BE36500A1D2B3 /* DetailsViewController.h */,
 				8F53FE83183BE36500A1D2B3 /* DetailsViewController.m */,
+				8F24A214184CF4A80050EEE0 /* DetailsTVC.h */,
+				8F24A215184CF4A80050EEE0 /* DetailsTVC.m */,
+				8F24A217184E31680050EEE0 /* DueDateVC.h */,
+				8F24A218184E31680050EEE0 /* DueDateVC.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -137,10 +147,10 @@
 			isa = PBXGroup;
 			children = (
 				8F53FE411836CD3800A1D2B3 /* CoreDataModel.xcdatamodeld */,
-				8F53FE8B183EB79900A1D2B3 /* Task.h */,
-				8F53FE8C183EB79900A1D2B3 /* Task.m */,
-				8F53FE88183EB79800A1D2B3 /* Location.h */,
-				8F53FE89183EB79800A1D2B3 /* Location.m */,
+				8F24A22C184E3D430050EEE0 /* Location.h */,
+				8F24A22D184E3D430050EEE0 /* Location.m */,
+				8F24A229184E3D420050EEE0 /* Task.h */,
+				8F24A22A184E3D420050EEE0 /* Task.m */,
 				8F53FE5C1836D23600A1D2B3 /* Location+Cloud.h */,
 				8F53FE5D1836D23600A1D2B3 /* Location+Cloud.m */,
 				8F53FE6B183754D100A1D2B3 /* Context.h */,
@@ -332,21 +342,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F53FE8A183EB79800A1D2B3 /* Location.m in Sources */,
 				8F53FE5B1836D21600A1D2B3 /* Task+Cloud.m in Sources */,
 				8F53FE7B1839671C00A1D2B3 /* NetworkActivity.m in Sources */,
+				8F24A216184CF4A80050EEE0 /* DetailsTVC.m in Sources */,
 				8F53FE7318395AA500A1D2B3 /* CoreDataTableViewController.m in Sources */,
+				8F24A22E184E3D430050EEE0 /* Location.m in Sources */,
 				8F53FE6D183754D100A1D2B3 /* Context.m in Sources */,
 				8F53FE6A1837469800A1D2B3 /* CloudTask.m in Sources */,
+				8F24A219184E31680050EEE0 /* DueDateVC.m in Sources */,
 				8F53FE901844358000A1D2B3 /* LocationService.m in Sources */,
 				8F8C553B1825AADA0045717F /* AppDelegate.m in Sources */,
 				8F53FE7818395C3B00A1D2B3 /* TaskCDTVC.m in Sources */,
 				8F53FE70183954A600A1D2B3 /* CloudLocation.m in Sources */,
 				8F8C55371825AADA0045717F /* main.m in Sources */,
-				8F53FE8D183EB79900A1D2B3 /* Task.m in Sources */,
 				8F53FE84183BE36500A1D2B3 /* DetailsViewController.m in Sources */,
 				8F53FE5E1836D23600A1D2B3 /* Location+Cloud.m in Sources */,
 				8F53FE431836CD3800A1D2B3 /* CoreDataModel.xcdatamodeld in Sources */,
+				8F24A22B184E3D420050EEE0 /* Task.m in Sources */,
 				8F53FE87183BFB7A00A1D2B3 /* FormatHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

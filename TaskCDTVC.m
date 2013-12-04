@@ -15,6 +15,7 @@
 #import "Task+Cloud.h"
 #import "FormatHelper.h"
 #import "LocationService.h"
+#import "DetailsTVC.h"
 
 @interface TaskCDTVC ()
 
@@ -91,7 +92,7 @@
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"update_date" ascending:NO selector:@selector(compare:)]];
         
-        request.predicate = nil;
+        request.predicate = [NSPredicate predicateWithFormat:@"active = %d", YES];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     } else
@@ -151,12 +152,93 @@
             }
         }
     }
-    
-    
-    
 }
 
 - (IBAction)refreshTasks:(UIBarButtonItem *)sender {
     [self refresh];
+}
+
+- (IBAction)cancelTask:(UIStoryboardSegue *) segue
+{
+    //Do nothing
+}
+
+- (IBAction)doneTask:(UIStoryboardSegue *) segue
+{
+
+    DetailsTVC *vc = [segue sourceViewController];
+    vc.task.active = @1;
+    [self postTask:vc];
+
+}
+
+- (IBAction)deleteTask:(UIStoryboardSegue *) segue
+{
+    DetailsTVC *vc = [segue sourceViewController];
+    vc.task.active = @0;
+    [self postTask:vc];
+}
+
+- (void) postTask:(DetailsTVC *)vc
+{
+    NSMutableDictionary *taskDictionary = [[NSMutableDictionary alloc] init];
+    
+    NSDate *currentDate = [[NSDate alloc] init];
+    NSString *currentDateString = [FormatHelper localeDateToJsonDate:[[NSDate alloc] init]];
+    
+    
+    if(vc.task)
+    {
+        vc.task.title = [vc getTitle];
+        vc.task.update_date = currentDate;
+        vc.task.due_date = [vc getDueDate];
+        
+        [taskDictionary setObject:vc.task.title forKey:@"title"];
+        [taskDictionary setObject:vc.task.task_id  forKey:@"task_id"];
+        [taskDictionary setObject:currentDateString forKey:@"update_date"];
+        [taskDictionary setObject:[FormatHelper localeDateToJsonDate:vc.task.due_date] forKey:@"due_date"];
+        [taskDictionary setObject:vc.task.active forKey:@"active"];
+        
+    } else {
+        [taskDictionary setObject:[vc getTitle] forKey:@"title"];
+        [taskDictionary setObject:@0 forKey:@"task_id"];
+        [taskDictionary setObject:currentDateString forKey:@"update_date"];
+        
+        if([vc getDueDate])
+        {
+            [taskDictionary setObject:[FormatHelper localeDateToJsonDate:[vc getDueDate]] forKey:@"due_date"];
+        }
+        
+        
+        [taskDictionary setObject:currentDateString forKey:@"create_date"];
+    }
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:taskDictionary
+                                                       options:kNilOptions
+                                                         error:&error];
+    
+    NSString *url = @"http://pierrethelusma.com/Services/api/task/SetTask/";
+    
+    NSString *jsonLength = [NSString stringWithFormat:@"%d", [jsonData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:jsonLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:jsonData];
+    
+    NSURLResponse *response;
+    
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSDictionary *results = returnData ? [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves error:&error] : nil;
+    
+    vc.task.task_id = [results objectForKey:@"task_id"];
+    vc.task.alternate_id = [results objectForKey:@"alternate_id"];
+    
+    if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
+    
 }
 @end

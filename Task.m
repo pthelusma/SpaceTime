@@ -2,7 +2,7 @@
 //  Task.m
 //  ConsumeWSDL
 //
-//  Created by Pierre Thelusma on 11/21/13.
+//  Created by Pierre Thelusma on 12/3/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
 
@@ -11,15 +11,15 @@
 
 @implementation Task
 
-@dynamic task_id;
-@dynamic title;
-@dynamic create_date;
-@dynamic update_date;
-@dynamic due_date;
+@dynamic active;
 @dynamic alternate_id;
+@dynamic create_date;
+@dynamic due_date;
 @dynamic latitude;
 @dynamic longitude;
-@dynamic active;
 @dynamic sync_status;
+@dynamic task_id;
+@dynamic title;
+@dynamic update_date;
 
 @end

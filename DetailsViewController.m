@@ -51,7 +51,7 @@ CLLocation *currentLocation;
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [_txtTitle resignFirstResponder];
+    [self.txtTitle resignFirstResponder];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -183,6 +183,11 @@ CLLocation *currentLocation;
 {
     //NSLog(@"didUpdateToLocation: %@", newLocation);
     currentLocation = newLocation;
+}
+
+-(IBAction)returnDueDate:(UIStoryboardSegue *) segue
+{
+    
 }
 
 
