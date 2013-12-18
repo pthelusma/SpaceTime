@@ -12,5 +12,7 @@
 
 + (Task *) createTask: (NSDictionary *) dictionary context:(NSManagedObjectContext *)context;
 
++ (Task *) retrieveTask:(NSInteger) task_id context:(NSManagedObjectContext *)context;
+
 
 @end

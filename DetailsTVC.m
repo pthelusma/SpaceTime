@@ -7,8 +7,18 @@
 //
 
 #import "DetailsTVC.h"
+#import "LocationCDTVC.h"
+#import "RadiusCDTVC.h"
 #import "DueDateVC.h"
 #import "FormatHelper.h"
+#import "Location.h"
+#import "Radius.h"
+#import "TaskLocation.h"
+#import "TaskLocation+Cloud.h"
+#import "Location+Cloud.h"
+#import "Radius+Cloud.h"
+#import "Context.h"
+
 
 @interface DetailsTVC ()
 
@@ -25,16 +35,6 @@
 
 @implementation DetailsTVC
 
-- (NSString *) getTitle
-{
-    return self.txtTitle.text;
-}
-
-- (NSDate *) getDueDate
-{
-    return [FormatHelper formatString: self.dueDateCell.detailTextLabel.text];
-}
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -48,7 +48,6 @@
 {
     [super viewDidLoad];
     self.txtTitle.delegate = self;
-    [self updateUI];
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -75,6 +74,28 @@
 - (void) setTask:(Task *) task
 {
     _task = task;
+    
+    if(!self.context)
+    {
+        [Context createContext:^(NSManagedObjectContext *context){
+            self.context = context;
+        } refresh:^{
+            [self updateUI];
+        }];
+    } else
+    {
+        [self updateUI];
+    }
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)setContext:(NSManagedObjectContext *)context
+{
+    _context = context;
     [self updateUI];
 }
 
@@ -114,11 +135,26 @@
         self.dueDateCell.textLabel.text = @"Due Date:";
         self.dueDateCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
         
-        self.locationCell.textLabel.text = @"Location:";
-        self.locationCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
+        TaskLocation *taskLocation = [TaskLocation retrieveTaskLocation:[self.task.task_id doubleValue] context:self.context];
         
+        self.locationCell.detailTextLabel.text = [self.location title];
+        self.radiusCell.detailTextLabel.text = [self.radius radius_description];
+        
+        if(self.location || self.radius)
+        {
+            self.locationCell.detailTextLabel.text = [self.location title];
+            self.radiusCell.detailTextLabel.text = [self.radius radius_description];
+        } else if(taskLocation)
+        {
+            self.location = [Location retrieveLocation:[taskLocation.location_id integerValue] context:self.context];
+            self.radius = [Radius retrieveRadius:[taskLocation.radius_id integerValue] context:self.context];
+            self.locationCell.detailTextLabel.text = [self.location title];
+            self.radiusCell.detailTextLabel.text = [self.radius radius_description];
+        }
+        
+        self.locationCell.textLabel.text = @"Location:";
         self.radiusCell.textLabel.text = @"Radius:";
-        self.radiusCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
+
     }
     else
     {
@@ -131,13 +167,13 @@
         self.updateDateCell.detailTextLabel.text = [FormatHelper formatDate:[[NSDate alloc]init]];
         
         self.dueDateCell.textLabel.text = @"Due Date:";
-        self.dueDateCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
+        self.dueDateCell.detailTextLabel.text = [FormatHelper formatDate:self.dueDate];
         
         self.locationCell.textLabel.text = @"Location:";
-        self.locationCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
+        self.locationCell.detailTextLabel.text = self.location.title;
         
         self.radiusCell.textLabel.text = @"Radius:";
-        self.radiusCell.detailTextLabel.text = [FormatHelper formatDate:self.task.due_date];
+        self.radiusCell.detailTextLabel.text = self.radius.radius_description;
     }
 }
 
@@ -163,7 +199,7 @@
             {
                 if([segue.destinationViewController respondsToSelector:@selector(setLocation:)])
                 {
-                    
+                    [segue.destinationViewController performSelector:@selector(setLocation:) withObject:self.location];
                 }
             }
             
@@ -171,26 +207,72 @@
             {
                 if([segue.destinationViewController respondsToSelector:@selector(setRadius:)])
                 {
-                    
+                    [segue.destinationViewController performSelector:@selector(setRadius:) withObject:self.radius];
                 }
             }
         }
     }
 }
 
-- (IBAction)returnFromDueDatePicker:(UIStoryboardSegue *) segue
+- (IBAction)doneDueDate:(UIStoryboardSegue *) segue
 {
- 
     DueDateVC *vc = [segue sourceViewController];
-    self.dueDateCell.detailTextLabel.text = [FormatHelper formatDate:vc.dueDate];
     
+    if(vc.dueDate)
+    {
+        self.dueDate = vc.dueDate;
+    }
+    
+    self.dueDateCell.detailTextLabel.text = [FormatHelper formatDate:self.dueDate];
 }
 
-- (IBAction)cancelFromDueDatePicker:(UIStoryboardSegue *) segue
+- (IBAction)cancelDueDate:(UIStoryboardSegue *) segue
 {
-    //Do nothing
+    //Do nothing intentionally
 }
 
+- (IBAction)doneLocation:(UIStoryboardSegue *) segue
+{
+    LocationCDTVC *vc = [segue sourceViewController];
+    
+    if(vc.location)
+    {
+        self.location = vc.location;
+    }
+    
+    [self updateUI];
+}
 
+- (IBAction)cancelLocation:(UIStoryboardSegue *) segue
+{
+    //Do nothing intentionally
+}
+
+- (IBAction)doneRadius:(UIStoryboardSegue *) segue
+{
+    RadiusCDTVC *vc = [segue sourceViewController];
+    
+    if(vc.radius)
+    {
+        self.radius = vc.radius;
+    }
+    
+    [self updateUI];
+}
+
+- (IBAction)cancelRadius:(UIStoryboardSegue *) segue
+{
+    //Do nothing intentionally
+}
+
+- (NSString *) getTitle
+{
+    return self.txtTitle.text;
+}
+
+- (NSString *) getDueDate
+{
+    return self.dueDateCell.detailTextLabel.text;
+}
 
 @end

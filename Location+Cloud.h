@@ -12,4 +12,6 @@
 
 + (void) createLocation: (NSDictionary *) dictionary context:(NSManagedObjectContext *)context;
 
++ (Location *) retrieveLocation:(NSInteger) location_id context:(NSManagedObjectContext *)context;
+
 @end

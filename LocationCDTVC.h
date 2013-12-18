@@ -1,16 +1,17 @@
 //
-//  TaskCDTVC.h
+//  LocationCDTVC.h
 //  ConsumeWSDL
 //
-//  Created by Pierre Thelusma on 11/17/13.
+//  Created by Pierre Thelusma on 12/10/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
 
 #import "CoreDataTableViewController.h"
-#import <CoreLocation/CoreLocation.h>
+#import "Location.h"
 
-@interface TaskCDTVC : CoreDataTableViewController
+@interface LocationCDTVC : CoreDataTableViewController
 
+@property (nonatomic, strong) Location *location;
 @property (nonatomic, strong) NSManagedObjectContext *context;
 
 @end

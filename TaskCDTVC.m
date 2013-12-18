@@ -9,13 +9,20 @@
 #import "TaskCDTVC.h"
 #import "Task.h"
 #import "Context.h"
-#import "CloudLocation.h"
 #import "CloudTask.h"
 #import "NetworkActivity.h"
 #import "Task+Cloud.h"
 #import "FormatHelper.h"
-#import "LocationService.h"
 #import "DetailsTVC.h"
+#import "Location.h"
+#import "Location+Cloud.h"
+#import "Radius+Cloud.h"
+#import "Radius.h"
+#import "TaskLocation.h"
+#import "TaskLocation+Cloud.h"
+#import "NotificationManager.h"
+#import "LocationManager.h"
+#import "NotificationManager.h"
 
 @interface TaskCDTVC ()
 
@@ -32,6 +39,7 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -39,6 +47,8 @@
     [self.refreshControl addTarget:self
                             action:@selector(refresh)
                   forControlEvents:UIControlEventValueChanged];
+    
+    [[LocationManager sharedLocationManager] startMonitoringLocationChanges];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -68,19 +78,36 @@
         
         [NetworkActivity startIndicator];
         NSArray *tasks = [CloudTask fetchTasks];
+        NSArray *locations = [CloudTask fetchLocations];
+        NSArray *radii = [CloudTask fetchRadii];
         [NetworkActivity stopIndicator];
         
         [self.context performBlock:^{
-            for(NSDictionary *dictionary in tasks)
+            for(NSDictionary *locationDictionary in locations)
             {
-                [Task createTask:dictionary context:self.context];
+                [Location createLocation:locationDictionary
+                                 context:self.context];
+            }
+            
+            for(NSDictionary *radiusDictionary in radii)
+            {
+                [Radius createRadius:radiusDictionary context:self.context];
+            }
+            
+            for(NSDictionary *taskDictionary in tasks)
+            {
+                [Task createTask:taskDictionary context:self.context];
             }
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
+            [[LocationManager sharedLocationManager] registerRegions];
+            [[NotificationManager sharedNotificationManager] registerNotifications];
         });
     });
+    
+
 }
 
 - (void)setContext:(NSManagedObjectContext *)context
@@ -109,7 +136,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:@"Task"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Task"];
     
     Task *task = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
@@ -154,63 +181,95 @@
     }
 }
 
-- (IBAction)refreshTasks:(UIBarButtonItem *)sender {
+- (IBAction)refreshTasks:(UIBarButtonItem *)sender
+{
     [self refresh];
 }
 
 - (IBAction)cancelTask:(UIStoryboardSegue *) segue
 {
-    //Do nothing
+    //Do nothing intentionally
 }
 
-- (IBAction)doneTask:(UIStoryboardSegue *) segue
-{
-
-    DetailsTVC *vc = [segue sourceViewController];
-    vc.task.active = @1;
-    [self postTask:vc];
-
-}
-
-- (IBAction)deleteTask:(UIStoryboardSegue *) segue
+- (IBAction) doneTask:(UIStoryboardSegue *) segue
 {
     DetailsTVC *vc = [segue sourceViewController];
-    vc.task.active = @0;
-    [self postTask:vc];
+    
+    if(vc)
+    {
+        vc.task.active = @1;
+        [self postTask:vc];
+    }
 }
 
-- (void) postTask:(DetailsTVC *)vc
+- (IBAction) deleteTask:(UIStoryboardSegue *) segue
+{
+    DetailsTVC *vc = [segue sourceViewController];
+    
+    if(vc)
+    {
+        vc.task.active = @0;
+        [self postTask:vc];
+    }
+}
+
+- (void) postTask:(DetailsTVC*) vc
 {
     NSMutableDictionary *taskDictionary = [[NSMutableDictionary alloc] init];
-    
     NSDate *currentDate = [[NSDate alloc] init];
-    NSString *currentDateString = [FormatHelper localeDateToJsonDate:[[NSDate alloc] init]];
-    
+    NSString *currentDateString = [FormatHelper localeDateToJsonDate:currentDate];
     
     if(vc.task)
     {
-        vc.task.title = [vc getTitle];
+        vc.task.title = vc.getTitle;
         vc.task.update_date = currentDate;
-        vc.task.due_date = [vc getDueDate];
+        vc.task.due_date = [FormatHelper formatString:vc.getDueDate];
         
         [taskDictionary setObject:vc.task.title forKey:@"title"];
         [taskDictionary setObject:vc.task.task_id  forKey:@"task_id"];
         [taskDictionary setObject:currentDateString forKey:@"update_date"];
-        [taskDictionary setObject:[FormatHelper localeDateToJsonDate:vc.task.due_date] forKey:@"due_date"];
         [taskDictionary setObject:vc.task.active forKey:@"active"];
         
-    } else {
-        [taskDictionary setObject:[vc getTitle] forKey:@"title"];
-        [taskDictionary setObject:@0 forKey:@"task_id"];
-        [taskDictionary setObject:currentDateString forKey:@"update_date"];
-        
-        if([vc getDueDate])
+        if(vc.task.due_date)
         {
-            [taskDictionary setObject:[FormatHelper localeDateToJsonDate:[vc getDueDate]] forKey:@"due_date"];
+            [taskDictionary setObject:[FormatHelper localeDateToJsonDate:vc.task.due_date] forKey:@"due_date"];
         }
         
+        if(vc.radius && vc.location)
+        {
+            NSMutableDictionary *taskLocationDictionary = [[NSMutableDictionary alloc] init];
+            [taskLocationDictionary setObject:vc.task.task_id forKey:@"task_id"];
+            [taskLocationDictionary setObject:vc.radius.radius_id forKey:@"radius_id"];
+            [taskLocationDictionary setObject:vc.location.location_id forKey:@"location_id"];
+            
+            NSArray *taskLocationArray = [[NSArray alloc] initWithObjects:taskLocationDictionary, nil];
+            
+            [taskDictionary setObject:taskLocationArray forKey:@"TaskLocations"];
+        }
         
+    } else {
+        [taskDictionary setObject:vc.getTitle forKey:@"title"];
+        [taskDictionary setObject:@0 forKey:@"task_id"];
+        [taskDictionary setObject:currentDateString forKey:@"update_date"];
         [taskDictionary setObject:currentDateString forKey:@"create_date"];
+        [taskDictionary setObject:[NSNumber numberWithDouble:[[LocationManager sharedLocationManager] currentLocation].coordinate.latitude] forKey:@"latitude"];
+        [taskDictionary setObject:[NSNumber numberWithDouble:[[LocationManager sharedLocationManager] currentLocation].coordinate.longitude] forKey:@"longitude"];
+        
+        if(vc.getDueDate)
+        {
+            [taskDictionary setObject:[FormatHelper localeDateToJsonDate:[FormatHelper formatString:vc.getDueDate]] forKey:@"due_date"];
+        }
+        
+        if(vc.radius && vc.location)
+        {
+            NSMutableDictionary *taskLocationDictionary = [[NSMutableDictionary alloc] init];
+            [taskLocationDictionary setObject:vc.radius.radius_id forKey:@"radius_id"];
+            [taskLocationDictionary setObject:vc.location.location_id forKey:@"location_id"];
+            
+            NSArray *taskLocationArray = [[NSArray alloc] initWithObjects:taskLocationDictionary, nil];
+            
+            [taskDictionary setObject:taskLocationArray forKey:@"TaskLocations"];
+        }
     }
     
     NSError *error;
@@ -238,7 +297,20 @@
     vc.task.task_id = [results objectForKey:@"task_id"];
     vc.task.alternate_id = [results objectForKey:@"alternate_id"];
     
+    [self.context performBlock:^{
+        NSArray *taskLocationsArray = [results objectForKey:@"TaskLocations"];
+        
+        for(NSDictionary *taskLocation in taskLocationsArray)
+        {
+            [TaskLocation createTaskLocation:taskLocation context:self.context];
+        }
+    }];
+    
     if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
     
+    [[LocationManager sharedLocationManager] registerRegions];
+    [[NotificationManager sharedNotificationManager] registerNotifications];
+    
 }
+
 @end

@@ -6,6 +6,12 @@
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Radius" representedClassName="Radius" syncable="YES">
+        <attribute name="radius_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="radius_distance" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="radius_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="unit" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Task" representedClassName="Task" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="alternate_id" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,8 +24,17 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="update_date" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
+    <entity name="TaskLocation" representedClassName="TaskLocation" syncable="YES">
+        <attribute name="alternate_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="radius_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="task_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="task_location_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Task" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Location" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Radius" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Task" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TaskLocation" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

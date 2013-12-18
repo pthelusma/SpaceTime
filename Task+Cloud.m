@@ -7,6 +7,8 @@
 //
 
 #import "Task+Cloud.h"
+#import "TaskLocation+Cloud.h"
+#import "TaskLocation.h"
 #import "FormatHelper.h"
 
 @implementation Task (Cloud)
@@ -40,6 +42,14 @@
         task.alternate_id = [dictionary objectForKey:@"alternate_id"];
         task.sync_status = @"synched";
         
+        NSArray *taskLocations = [dictionary objectForKey:@"TaskLocations"];
+        
+        [context performBlock:^{
+            for(NSDictionary *tl in taskLocations)
+            {
+                [TaskLocation createTaskLocation:tl context:context];
+            }
+        }];
     } else //no matches on pk
     {
         task = [NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:context];
@@ -54,13 +64,42 @@
         task.active = [dictionary objectForKey:@"active"];
         task.alternate_id = [dictionary objectForKey:@"alternate_id"];
         task.sync_status = @"synched";
+        
+        NSArray *taskLocations = [dictionary objectForKey:@"TaskLocations"];
+        
+        [context performBlock:^{
+            for(NSDictionary *tl in taskLocations)
+            {
+                [TaskLocation createTaskLocation:tl context:context];
+            }
+        }];
     }
     
     return task;
 }
 
-
-
++ (Task *) retrieveTask:(NSInteger) task_id context:(NSManagedObjectContext *)context
+{
+    Task *task = nil;
+    
+    NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_id" ascending:YES]];
+    request.predicate = [NSPredicate predicateWithFormat:@"task_id = %d", task_id];
+    
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    
+    if(!matches || [matches count] > 1) //many matches on pk
+    {
+        NSLog(@"%@", @"Multiple matches on primary key");
+    } else if([matches count]) //one match on pk
+    {
+        task = [matches lastObject];
+    }
+    
+    return task;
+    
+}
 
 
 

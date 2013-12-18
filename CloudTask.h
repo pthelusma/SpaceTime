@@ -10,9 +10,10 @@
 
 @interface CloudTask : NSObject
 
-@property (nonatomic, strong) NSManagedObjectContext *context;
-@property (nonatomic, strong) NSArray *jsonObject;
-
 + (NSArray *) fetchTasks;
++ (NSArray *) fetchLocations;
++ (NSArray *) fetchRadii;
++ (NSString *) fetchCityStateByLat:(NSNumber *)lat Lng:(NSNumber *)lng;
+
 
 @end
