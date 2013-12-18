@@ -66,6 +66,8 @@
     {
         [self refresh];
     }
+    
+    self.title = @"My Tasks";
 }
 
 - (void) refresh

@@ -76,7 +76,7 @@
         {
             NSArray *types = [result objectForKey:@"types"];
             NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", types];
-            if([typePredicate evaluateWithObject:@"street_address"])
+            if([typePredicate evaluateWithObject:@"route"])
             {
                 NSArray *addressComponents = [result objectForKey:@"address_components"];
                 
@@ -84,7 +84,7 @@
                 {
                     NSArray *types = [addressComponent objectForKey:@"types"];
                     NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", types];
-                    if([typePredicate evaluateWithObject:@"sublocality"])
+                    if([typePredicate evaluateWithObject:@"locality"])
                     {
                         city = [addressComponent objectForKey:@"short_name"];
                     }

@@ -18,6 +18,9 @@
 #import "Location+Cloud.h"
 #import "Radius+Cloud.h"
 #import "Context.h"
+#import "NetworkActivity.h"
+#import "CloudTask.h"
+#import "LocationManager.h"
 
 
 @interface DetailsTVC ()
@@ -160,6 +163,8 @@
     {
         self.deleteButton.enabled = NO;
         
+        self.txtTitle.placeholder = [self getPlaceHolderTitle];
+        
         self.createDateCell.textLabel.text = @"Create Date:";
         self.createDateCell.detailTextLabel.text = [FormatHelper formatDate:[[NSDate alloc]init]];
         
@@ -273,6 +278,18 @@
 - (NSString *) getDueDate
 {
     return self.dueDateCell.detailTextLabel.text;
+}
+
+- (NSString *) getPlaceHolderTitle
+{
+    NSString *cityState = nil;
+    CLLocation *currentLocation = [[LocationManager sharedLocationManager] currentLocation];
+    
+    [NetworkActivity startIndicator];
+    cityState = [CloudTask fetchCityStateByLat:[NSNumber numberWithDouble:currentLocation.coordinate.latitude] Lng:[NSNumber numberWithDouble:currentLocation.coordinate.longitude]];
+    [NetworkActivity stopIndicator];
+    
+    return [NSString stringWithFormat:@"New Task @ %@ ", cityState];
 }
 
 @end
