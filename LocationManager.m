@@ -82,10 +82,28 @@
     return self.locationManager.location;
 }
 
+- (NSString *)retrieveCityState
+{
+    return self.cityState;
+}
+
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {
     
     self.currentLocation = [locations lastObject];
+    
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:self.currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if(placemarks.count){
+             NSDictionary *dictionary = [[placemarks objectAtIndex:0] addressDictionary];
+             NSString *city = [dictionary valueForKey:@"City"];
+             NSString *state = [dictionary valueForKey:@"State"];
+             
+             self.cityState = [[city stringByAppendingString:@", "] stringByAppendingString:state];
+         }
+     }];
+    
     NSLog(@"latitude %+.6f, longitude %+.6f\n", self.currentLocation.coordinate.latitude, self.currentLocation.coordinate.longitude);
 }
 
@@ -96,30 +114,28 @@
     
     if(isRegionMonitoringAvailable)
     {
-        [self.context performBlock:^{
-            NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"TaskLocation"];
-            request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_location_id" ascending:YES]];
-            request.predicate = nil;
+        NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"TaskLocation"];
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_location_id" ascending:YES]];
+        request.predicate = nil;
+        
+        NSError *error = nil;
+        NSArray *matches = [self.context executeFetchRequest:request error:&error];
+        
+        for(TaskLocation *taskLocation in matches)
+        {
+            Radius *radius = [Radius retrieveRadius:[taskLocation.radius_id integerValue] context:self.context];
+            Location *location = [Location retrieveLocation:[taskLocation.location_id integerValue] context:self.context];
             
-            NSError *error = nil;
-            NSArray *matches = [self.context executeFetchRequest:request error:&error];
+            CLCircularRegion *geoRegion = [[CLCircularRegion alloc]
+                                           initWithCenter:CLLocationCoordinate2DMake([location.latitude doubleValue], [location.longitude doubleValue])
+                                           radius:[radius.radius_distance integerValue]
+                                           identifier:taskLocation.alternate_id];
             
-            for(TaskLocation *taskLocation in matches)
-            {
-                Radius *radius = [Radius retrieveRadius:[taskLocation.radius_id integerValue] context:self.context];
-                Location *location = [Location retrieveLocation:[taskLocation.location_id integerValue] context:self.context];
-                
-                CLCircularRegion *geoRegion = [[CLCircularRegion alloc]
-                                               initWithCenter:CLLocationCoordinate2DMake([location.latitude doubleValue], [location.longitude doubleValue])
-                                               radius:[radius.radius_distance integerValue]
-                                               identifier:taskLocation.alternate_id];
-                
-                [self.locationManager startMonitoringForRegion:geoRegion];
-                [self.locationManager requestStateForRegion:geoRegion];
-                
-                NSLog(@"Registered region: radius=%@, latitude=%@ longitude=%@", radius.radius_description, location.latitude, location.longitude);
-            }
-        }];
+            [self.locationManager startMonitoringForRegion:geoRegion];
+            [self.locationManager requestStateForRegion:geoRegion];
+            
+            NSLog(@"Registered region: radius=%@, latitude=%@ longitude=%@", radius.radius_description, location.latitude, location.longitude);
+        }
     }
 }
 
@@ -145,7 +161,7 @@
         
         NSString *message = [NSString stringWithFormat:@"You are within %@ of location %@ for task %@", radius.radius_description, location.title, task.title];
         
-        [NotificationManager scheduleLocalNotification:message fireDate: nil];
+        [NotificationManager scheduleLocalNotification:message fireDate: nil type:@"Location" identifier:taskLocation.alternate_id];
     }
 }
 

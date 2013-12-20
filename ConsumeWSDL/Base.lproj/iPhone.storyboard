@@ -294,7 +294,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="dgz-R7-uTP">
+                            <datePicker contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="dgz-R7-uTP">
                                 <rect key="frame" x="0.0" y="102" width="320" height="162"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <date key="date" timeIntervalSinceReferenceDate="407777556.24465901">
@@ -322,15 +322,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
 </data>
                                 </timeZone>
                             </datePicker>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTk-CT-1Bd">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTk-CT-1Bd">
                                 <rect key="frame" x="20" y="73" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qQS-jV-wFJ">
-                                <rect key="frame" x="0.0" y="287" width="320" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQS-jV-wFJ">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem systemItem="done" id="gem-BS-elU">
@@ -348,6 +348,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qQS-jV-wFJ" firstAttribute="trailing" secondItem="dgz-R7-uTP" secondAttribute="trailing" id="LPA-rX-eaJ"/>
+                            <constraint firstItem="qQS-jV-wFJ" firstAttribute="leading" secondItem="YsX-Cj-ePW" secondAttribute="leading" id="Oj6-zI-AmW"/>
+                            <constraint firstAttribute="trailing" secondItem="qQS-jV-wFJ" secondAttribute="trailing" id="PFt-se-oXP"/>
+                            <constraint firstItem="qQS-jV-wFJ" firstAttribute="centerX" secondItem="UTk-CT-1Bd" secondAttribute="centerX" id="Xkp-gJ-ugY"/>
+                            <constraint firstItem="qQS-jV-wFJ" firstAttribute="leading" secondItem="dgz-R7-uTP" secondAttribute="leading" id="mjn-yR-YSS"/>
+                            <constraint firstAttribute="bottom" secondItem="qQS-jV-wFJ" secondAttribute="bottom" id="uUK-g5-jG4"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TVQ-kJ-R5a"/>
                     <connections>

@@ -104,12 +104,10 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
-            [[LocationManager sharedLocationManager] registerRegions];
             [[NotificationManager sharedNotificationManager] registerNotifications];
+            [[LocationManager sharedLocationManager] registerRegions];
         });
     });
-    
-
 }
 
 - (void)setContext:(NSManagedObjectContext *)context

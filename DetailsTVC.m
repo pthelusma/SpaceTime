@@ -140,20 +140,16 @@
         
         TaskLocation *taskLocation = [TaskLocation retrieveTaskLocation:[self.task.task_id doubleValue] context:self.context];
         
-        self.locationCell.detailTextLabel.text = [self.location title];
-        self.radiusCell.detailTextLabel.text = [self.radius radius_description];
-        
         if(self.location || self.radius)
         {
-            self.locationCell.detailTextLabel.text = [self.location title];
-            self.radiusCell.detailTextLabel.text = [self.radius radius_description];
         } else if(taskLocation)
         {
             self.location = [Location retrieveLocation:[taskLocation.location_id integerValue] context:self.context];
             self.radius = [Radius retrieveRadius:[taskLocation.radius_id integerValue] context:self.context];
-            self.locationCell.detailTextLabel.text = [self.location title];
-            self.radiusCell.detailTextLabel.text = [self.radius radius_description];
         }
+        
+        self.locationCell.detailTextLabel.text = [self.location title];
+        self.radiusCell.detailTextLabel.text = [self.radius radius_description];
         
         self.locationCell.textLabel.text = @"Location:";
         self.radiusCell.textLabel.text = @"Radius:";
@@ -283,10 +279,10 @@
 - (NSString *) getPlaceHolderTitle
 {
     NSString *cityState = nil;
-    CLLocation *currentLocation = [[LocationManager sharedLocationManager] currentLocation];
+    //CLLocation *currentLocation = [[LocationManager sharedLocationManager] currentLocation];
     
     [NetworkActivity startIndicator];
-    cityState = [CloudTask fetchCityStateByLat:[NSNumber numberWithDouble:currentLocation.coordinate.latitude] Lng:[NSNumber numberWithDouble:currentLocation.coordinate.longitude]];
+    cityState = [[LocationManager sharedLocationManager] cityState];
     [NetworkActivity stopIndicator];
     
     return [NSString stringWithFormat:@"New Task @ %@ ", cityState];

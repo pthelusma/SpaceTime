@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *context;
 @property (nonatomic, strong) CLLocation *currentLocation;
+@property (nonatomic, strong) NSString *cityState;
 
 + (instancetype)sharedLocationManager;
 - (void)startMonitoringLocationChanges;

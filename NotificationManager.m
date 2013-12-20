@@ -41,11 +41,16 @@
     
 }
 
-+ (void)scheduleLocalNotification:(NSString *)message fireDate:(NSDate *) fireDate
++ (void)scheduleLocalNotification:(NSString *)message fireDate:(NSDate *) fireDate type:(NSString *) notificationType identifier:(NSString *) alternate_id
 {
     UILocalNotification *localNotification = [UILocalNotification new];
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    
+    [userInfo setValue:alternate_id forKey:@"alternate_id"];
+    
     localNotification.alertBody = message;
     localNotification.soundName = UILocalNotificationDefaultSoundName;
+    localNotification.userInfo = userInfo;
     
     if(fireDate)
     {
@@ -59,8 +64,6 @@
 
 - (void) registerNotifications
 {
-    
-    [self.context performBlock:^{
         NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
         request.sortDescriptors = nil;
         request.predicate = nil;
@@ -73,10 +76,23 @@
             if(task.due_date)
             {
                 NSString *message = [NSString stringWithFormat:@"Task %@ is due now", task.title];
-                [NotificationManager scheduleLocalNotification:message fireDate:task.due_date];
+                
+                for(UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
+                {
+                    NSDictionary *userInfo = [localNotification userInfo];
+                    
+                    if([[userInfo objectForKey:@"alternate_id"] isEqualToString:task.alternate_id])
+                    {
+                        NSLog(@"Cancelled notification for: %@", message);
+                        [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
+                    }
+                }
+                
+                [NotificationManager scheduleLocalNotification:message fireDate:task.due_date type:@"Time" identifier:task.alternate_id];
+                
+                NSLog(@"Registered notification: %@", message);
             }
         }
-    }];
 }
 
 @end
