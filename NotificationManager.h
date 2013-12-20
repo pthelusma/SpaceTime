@@ -12,9 +12,8 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *context;
 
-+ (void)scheduleLocalNotification:(NSString *)message fireDate:(NSDate *) fireDate type:(NSString *) notificationType identifier:(NSString *) alternate_id;
-
 + (instancetype)sharedNotificationManager;
 - (void) registerNotifications;
++ (void)scheduleLocalNotification:(NSString *)message fireDate:(NSDate *) fireDate type:(NSString *) notificationType identifier:(NSString *) alternate_id;
 
 @end

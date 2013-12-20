@@ -18,7 +18,7 @@
     static NotificationManager *_sharedNotificationManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedNotificationManager= [[NotificationManager alloc] init];
+        _sharedNotificationManager = [[NotificationManager alloc] init];
     });
     
     return _sharedNotificationManager;
@@ -72,35 +72,37 @@
  */
 - (void) registerNotifications
 {
-        NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
-        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_id" ascending:YES]];
-        request.predicate = nil;
-        
-        NSError *error = nil;
-        NSArray *matches = [self.context executeFetchRequest:request error:&error];
-        
-        for(Task *task in matches)
+
+    NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_id" ascending:YES]];
+    request.predicate = nil;
+    
+    NSError *error = nil;
+    NSArray *matches = [self.context executeFetchRequest:request error:&error];
+    
+    for(Task *task in matches)
+    {
+        if(task.due_date)
         {
-            if(task.due_date)
+            NSString *message = [NSString stringWithFormat:@"Task %@ is due now", task.title];
+            
+            for(UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
             {
-                NSString *message = [NSString stringWithFormat:@"Task %@ is due now", task.title];
+                NSDictionary *userInfo = [localNotification userInfo];
                 
-                for(UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])
+                if([[userInfo objectForKey:@"alternate_id"] isEqualToString:task.alternate_id])
                 {
-                    NSDictionary *userInfo = [localNotification userInfo];
-                    
-                    if([[userInfo objectForKey:@"alternate_id"] isEqualToString:task.alternate_id])
-                    {
-                        NSLog(@"Cancelled notification for: %@", message);
-                        [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
-                    }
+                    NSLog(@"Cancelled notification for: %@", message);
+                    [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
                 }
-                
-                [NotificationManager scheduleLocalNotification:message fireDate:task.due_date type:@"Time" identifier:task.alternate_id];
-                
-                NSLog(@"Registered notification: %@", message);
             }
+            
+            [NotificationManager scheduleLocalNotification:message fireDate:task.due_date type:@"Time" identifier:task.alternate_id];
+            
+            NSLog(@"Registered notification: %@", message);
         }
+    }
+
 }
 
 @end

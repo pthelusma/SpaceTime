@@ -48,6 +48,10 @@
                             action:@selector(refresh)
                   forControlEvents:UIControlEventValueChanged];
     
+    //Initialize Singletons
+    [NotificationManager sharedNotificationManager];
+    [LocationManager sharedLocationManager];
+    
     [[LocationManager sharedLocationManager] startMonitoringLocationChanges];
 }
 
@@ -107,8 +111,8 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
-            [[NotificationManager sharedNotificationManager] registerNotifications];
             [[LocationManager sharedLocationManager] registerRegions];
+            [[NotificationManager sharedNotificationManager] registerNotifications];
         });
     });
 }
@@ -334,7 +338,7 @@
     if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
     
     [[LocationManager sharedLocationManager] registerRegions];
-    [[NotificationManager sharedNotificationManager] registerNotifications];
+    [NotificationManager sharedNotificationManager];
     
 }
 

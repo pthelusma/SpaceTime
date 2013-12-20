@@ -42,6 +42,7 @@
 		8FAD94611860A3F600E972E2 /* TaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FAD94601860A3F600E972E2 /* TaskLocation.m */; };
 		8FAD946418620A7C00E972E2 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FAD946318620A7C00E972E2 /* LocationManager.m */; };
 		8FAD94671862133200E972E2 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FAD94661862133200E972E2 /* NotificationManager.m */; };
+		8FAD946A1864B32200E972E2 /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FAD94691864B32200E972E2 /* ContextManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,8 @@
 		8FAD946318620A7C00E972E2 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		8FAD94651862133200E972E2 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		8FAD94661862133200E972E2 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		8FAD94681864B32200E972E2 /* ContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextManager.h; sourceTree = "<group>"; };
+		8FAD94691864B32200E972E2 /* ContextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				8F53FE681837469800A1D2B3 /* CloudTask.h */,
+				8FAD94681864B32200E972E2 /* ContextManager.h */,
+				8FAD94691864B32200E972E2 /* ContextManager.m */,
 				8F53FE691837469800A1D2B3 /* CloudTask.m */,
 				8FAD94651862133200E972E2 /* NotificationManager.h */,
 				8FAD94661862133200E972E2 /* NotificationManager.m */,
@@ -386,6 +391,7 @@
 				8F8C55371825AADA0045717F /* main.m in Sources */,
 				8FAD945E1859284B00E972E2 /* TaskLocation+Cloud.m in Sources */,
 				8F53FE5E1836D23600A1D2B3 /* Location+Cloud.m in Sources */,
+				8FAD946A1864B32200E972E2 /* ContextManager.m in Sources */,
 				8F53FE431836CD3800A1D2B3 /* CoreDataModel.xcdatamodeld in Sources */,
 				8F24A22B184E3D420050EEE0 /* Task.m in Sources */,
 				8F7BA82E185798260030EE75 /* LocationCDTVC.m in Sources */,

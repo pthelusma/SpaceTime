@@ -17,6 +17,7 @@
 #import "Location+Cloud.h"
 #import "TaskLocation.h"
 #import "TaskLocation+Cloud.h"
+#import "ContextManager.h"
 
 @interface LocationManager () <CLLocationManagerDelegate>
 
@@ -48,6 +49,7 @@
         } refresh:^{
             nil;
         }];
+        
     }
     
     return self;
