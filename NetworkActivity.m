@@ -5,6 +5,8 @@
 //  Created by Pierre Thelusma on 10/17/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
+//  Class created to indicate whether network activity is taking place using counters
+//
 
 #import "NetworkActivity.h"
 

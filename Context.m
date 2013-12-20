@@ -5,7 +5,8 @@
 //  Created by Pierre Thelusma on 10/30/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
-
+//  Class created to establish managed object context for application in order to access CoreData
+//
 #import "Context.h"
 
 @implementation Context

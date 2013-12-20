@@ -70,6 +70,9 @@
     self.title = @"My Tasks";
 }
 
+/*
+ Refreshes the data used in application from Web API and updates notifications and regions as necessary
+ */
 - (void) refresh
 {
 
@@ -110,6 +113,10 @@
     });
 }
 
+
+/*
+ Sets the context for the application and retrieves Tasks to be used in CoreDataTableViewController
+ */
 - (void)setContext:(NSManagedObjectContext *)context
 {
     _context = context;
@@ -134,6 +141,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
+ Configures each UITableViewCell to correspond to a task from CoreData
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Task"];
@@ -149,6 +159,9 @@
     return cell;
 }
 
+/*
+ Configures segue from existing task or new task to Details View Controller
+ */
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([sender isKindOfClass:[UITableViewCell class]])
@@ -186,11 +199,17 @@
     [self refresh];
 }
 
+/*
+ Unwind segue that returns to Task VC but does nothing to the model intentionally
+ */
 - (IBAction)cancelTask:(UIStoryboardSegue *) segue
 {
     //Do nothing intentionally
 }
 
+/*
+ Unwind segue that returns to Task VC, makes the task active and posts the task to the Web API
+ */
 - (IBAction) doneTask:(UIStoryboardSegue *) segue
 {
     DetailsTVC *vc = [segue sourceViewController];
@@ -202,6 +221,9 @@
     }
 }
 
+/*
+ Unwind segue that returns to Task VC, makes the task inactive and posts the task to the Web API
+ */
 - (IBAction) deleteTask:(UIStoryboardSegue *) segue
 {
     DetailsTVC *vc = [segue sourceViewController];
@@ -213,6 +235,9 @@
     }
 }
 
+/*
+ Converts task into a dictionary, serializes it into a json object, then delivers it to the Web API to update SQL Server db. Returns updated task from API and updates notifications and regions accordingly.
+ */
 - (void) postTask:(DetailsTVC*) vc
 {
     NSMutableDictionary *taskDictionary = [[NSMutableDictionary alloc] init];

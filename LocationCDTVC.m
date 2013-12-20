@@ -48,11 +48,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
+ Initial launch point of segue
+ */
 - (void) setLocation: (Location *) location
 {
     _location = location;
 }
 
+/*
+ Configures each UITableViewCell to correspond to a Location from CoreData
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Location"];
@@ -73,7 +79,9 @@
     
     return cell;
 }
-
+/*
+Sets the context for the application and retrieves Locations to be used in CoreDataTableViewController
+*/
 - (void)setContext:(NSManagedObjectContext *)context
 {
     _context = context;
@@ -91,6 +99,9 @@
     }
 }
 
+/*
+ Configures action when Location UITableViewCell is chosen
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

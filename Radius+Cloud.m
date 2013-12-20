@@ -5,6 +5,8 @@
 //  Created by Pierre Thelusma on 12/9/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
+//  Class used to create and retrieve Radius records in CoreData
+//
 
 #import "Radius+Cloud.h"
 

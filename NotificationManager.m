@@ -41,12 +41,17 @@
     
 }
 
+/*
+ Creates and schedules notifications in iOS notification center. UserInfo dictionary contains unique information pertaining to particular notification
+ */
 + (void)scheduleLocalNotification:(NSString *)message fireDate:(NSDate *) fireDate type:(NSString *) notificationType identifier:(NSString *) alternate_id
 {
     UILocalNotification *localNotification = [UILocalNotification new];
     NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
     
     [userInfo setValue:alternate_id forKey:@"alternate_id"];
+    [userInfo setValue:notificationType forKey:@"notificationType"];
+    [userInfo setValue:@"SpaceTime" forKey:@"application"];
     
     localNotification.alertBody = message;
     localNotification.soundName = UILocalNotificationDefaultSoundName;
@@ -62,10 +67,13 @@
     }
 }
 
+/*
+ Method used to register all time-based notifications.
+ */
 - (void) registerNotifications
 {
         NSFetchRequest*request = [NSFetchRequest fetchRequestWithEntityName:@"Task"];
-        request.sortDescriptors = nil;
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"task_id" ascending:YES]];
         request.predicate = nil;
         
         NSError *error = nil;

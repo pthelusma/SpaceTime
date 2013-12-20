@@ -82,11 +82,15 @@
     return self.locationManager.location;
 }
 
+
 - (NSString *)retrieveCityState
 {
     return self.cityState;
 }
 
+/*
+ Method that updates local CLLocation object upon change and looks up city and state of current location to store in local variable.
+ */
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations {
     
@@ -107,6 +111,9 @@
     NSLog(@"latitude %+.6f, longitude %+.6f\n", self.currentLocation.coordinate.latitude, self.currentLocation.coordinate.longitude);
 }
 
+/*
+ Method registers each of the circular regions for tasks in which notification is required and begins monitoring region
+ */
 - (void) registerRegions
 {
     
@@ -149,6 +156,9 @@
     NSLog(@"%@", @"Exited region");
 }
 
+/*
+ Method used to determine if device is within circular region, whether it began in the region or not. Creates an immediate notification when current state is inside a particular region
+ */
 - (void)locationManager:(CLLocationManager *)manager
       didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {

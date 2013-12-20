@@ -5,6 +5,8 @@
 //  Created by Pierre Thelusma on 11/15/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
+//  Class used to create and retrieve Task records in CoreData
+//
 
 #import "Task+Cloud.h"
 #import "TaskLocation+Cloud.h"

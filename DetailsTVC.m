@@ -53,11 +53,17 @@
     self.txtTitle.delegate = self;
 }
 
+/*
+ Allows user to click away from the text field to remove focus from title text field
+ */
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.txtTitle resignFirstResponder];
 }
 
+/*
+ Allows user to hit return to remove focus from title text field
+ */
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     if(textField)
@@ -74,6 +80,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
+ Initial launch point of segue
+ */
 - (void) setTask:(Task *) task
 {
     _task = task;
@@ -102,6 +111,9 @@
     [self updateUI];
 }
 
+/*
+ Updates the UI using the appropriate values from model, namely the Task object, whether nil or not. Nil means it is a new task
+ */
 - (void) updateUI
 {
     
@@ -178,6 +190,9 @@
     }
 }
 
+/*
+ Configures segue from details to Due Date/Location/Radius view
+ */
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([sender isKindOfClass:[UITableViewCell class]])
@@ -215,6 +230,9 @@
     }
 }
 
+/*
+ Unwind segue action to return from Due Date view controller
+ */
 - (IBAction)doneDueDate:(UIStoryboardSegue *) segue
 {
     DueDateVC *vc = [segue sourceViewController];
@@ -232,6 +250,9 @@
     //Do nothing intentionally
 }
 
+/*
+ Unwind segue action to return from Location view controller
+ */
 - (IBAction)doneLocation:(UIStoryboardSegue *) segue
 {
     LocationCDTVC *vc = [segue sourceViewController];
@@ -249,6 +270,9 @@
     //Do nothing intentionally
 }
 
+/*
+ Unwind segue action to return from Radius view controller
+ */
 - (IBAction)doneRadius:(UIStoryboardSegue *) segue
 {
     RadiusCDTVC *vc = [segue sourceViewController];
@@ -266,20 +290,28 @@
     //Do nothing intentionally
 }
 
+/*
+ Returns title from text field
+ */
 - (NSString *) getTitle
 {
     return self.txtTitle.text;
 }
 
+/*
+ Returns Due Date from UITableViewCell detail label text
+ */
 - (NSString *) getDueDate
 {
     return self.dueDateCell.detailTextLabel.text;
 }
 
+/*
+ Returns place holder title for new tasks with formatted city and state of current location
+ */
 - (NSString *) getPlaceHolderTitle
 {
     NSString *cityState = nil;
-    //CLLocation *currentLocation = [[LocationManager sharedLocationManager] currentLocation];
     
     [NetworkActivity startIndicator];
     cityState = [[LocationManager sharedLocationManager] cityState];

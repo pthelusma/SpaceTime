@@ -12,7 +12,9 @@
 
 
 @implementation CloudTask
-
+/*
+ Retrieves tasks from Web API, providing json results
+ */
 + (NSArray *) fetchTasks
 {
     
@@ -27,6 +29,9 @@
     
 }
 
+/*
+ Retrieves Locations from Web API, providing json results
+ */
 + (NSArray *) fetchLocations
 {
     
@@ -41,6 +46,9 @@
     
 }
 
+/*
+ Retrieves Radii from Web API, providing json results
+ */
 + (NSArray *) fetchRadii
 {
     
@@ -55,6 +63,10 @@
     
 }
 
+/*
+ Retrieves city and state from Google Geocode API, providing json results
+ This is no longer used and has been replaced by native Apple reverse geocoding
+ */
 + (NSString *) fetchCityStateByLat:(NSNumber *)lat Lng:(NSNumber *)lng
 {
     NSString *query = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=true", [lat doubleValue], [lng doubleValue]];

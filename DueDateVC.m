@@ -27,6 +27,9 @@
     return self;
 }
 
+/*
+ Initializes Date Picker with date from Details VC or current date is if was not already set
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,12 +47,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
+ Initial launch point of segue
+ */
 - (void) setDueDate:(NSDate *)dueDate
 {
     _dueDate = dueDate;
     [self updateUI];
 }
 
+/*
+ Updates UI with appropriate values from previous view controller
+ */
 - (void) updateUI
 {
     if(self.dueDate)
@@ -62,6 +71,9 @@
     }
 }
 
+/*
+ Method called whenever DatePicker is changed so that text field is changed to make the date
+ */
 - (void) updateDueDate:(id) sender
 {
     self.dueDate = self.dpDueDate.date;

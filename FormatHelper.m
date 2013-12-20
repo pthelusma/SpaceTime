@@ -5,6 +5,8 @@
 //  Created by Pierre Thelusma on 11/19/13.
 //  Copyright (c) 2013 Pierre Thelusma. All rights reserved.
 //
+//  Class created to create uniform formats for displaying dates, converting to and from json dates
+//
 
 #import "FormatHelper.h"
 

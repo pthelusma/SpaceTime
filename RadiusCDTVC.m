@@ -49,11 +49,17 @@
     }
 }
 
+/*
+ Initial launch point for segue from Details View Controller
+ */
 - (void) setRadius:(Radius *)radius
 {
     _radius = radius;
 }
 
+/*
+ Configures each UITableViewCell to correspond to a Radius from CoreData
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Radius"];
@@ -75,6 +81,9 @@
     return cell;
 }
 
+/*
+ Sets the context for the application and retrieves Radii to be used in CoreDataTableViewController
+ */
 - (void)setContext:(NSManagedObjectContext *)context
 {
     _context = context;
@@ -92,6 +101,9 @@
     }
 }
 
+/*
+ Configures action when Radius UITableViewCell is chosen
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
